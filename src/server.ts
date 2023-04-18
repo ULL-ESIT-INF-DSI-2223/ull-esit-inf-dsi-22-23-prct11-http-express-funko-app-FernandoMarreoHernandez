@@ -4,6 +4,7 @@ import {ColeccionFunkos} from './Funko/ColeccionFunkos.js';
 import { Usuario } from './Usuario/Usuario.js';
 import { ColeccionDatos } from './Funko/ColeccionDatos.js';
 import fs from 'fs';
+import chalk from 'chalk';
 import { finished } from 'stream';
 let ColeccionDatos1 = new ColeccionDatos([]);
 

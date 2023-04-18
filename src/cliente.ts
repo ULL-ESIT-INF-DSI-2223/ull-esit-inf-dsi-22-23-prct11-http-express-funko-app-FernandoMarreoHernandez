@@ -1,6 +1,7 @@
 import request from 'request';
 import {Funko, Tipo, Genero} from './Funko/Funko.js';
 import yargs from 'yargs';
+import chalk from 'chalk';
 import { hideBin } from 'yargs/helpers';
 
 interface ResponseData {
