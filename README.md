@@ -6,8 +6,8 @@
   - [Introducción](#introducción)
   - [Cliente](#cliente)
   - [Servidor](#servidor)
-    - [Ejercicio presencial](#ejercicio-presencial)
-    - [conclusiones](#conclusiones)
+  - [Ejercicio presencial](#ejercicio-presencial)
+  - [conclusiones](#conclusiones)
 
 ## Introducción
 
@@ -325,12 +325,12 @@ servidor.listen(4099, () => {
 ```
 Como se puede apreciar, el servidor esta escuchando en el puerto 4099 en este caso, y al iniciar el servidor, se llama al metodo para crear la base de datos.
 
-### Ejercicio presencial
+## Ejercicio presencial
 
 Por último, como ejercicio presencial nos toco hacer algo similar a la practica pero mas reducido y donde el cliente mandara un comando de linux al servidor para que este lo ejecute y nos devuelva el resultado.
 
 la principal diferencia es que usamos los child-process, mas especificamente el **spawn** para que ejcutara el comando que le mandamos, y el **on** para que nos devolviera el resultado de la ejecucion del comando.
 
-### conclusiones
+## conclusiones
 
 Tras ver la practica anterior y esta, se puede apreciar la facilidad y la velocidad con la que se puede trabajar con las url, express y los callbacks, ademas de ver enlaces y cosas que de normal ves en la vida cotidiana y planteandote dudas de cosas que pueden llegarse a hacer con ellas.
