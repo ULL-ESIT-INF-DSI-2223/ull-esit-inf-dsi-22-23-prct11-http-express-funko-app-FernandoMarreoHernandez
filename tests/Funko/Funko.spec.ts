@@ -1,6 +1,6 @@
 import 'mocha';
 import { expect } from 'chai';
-import { Funko,Genero,Tipo } from '../../dist/Funko/Funko.js';
+import { Funko,Genero,Tipo } from '../../src/Funko/Funko.js';
 import chalk from 'chalk';
 
 describe('Funko', () => {

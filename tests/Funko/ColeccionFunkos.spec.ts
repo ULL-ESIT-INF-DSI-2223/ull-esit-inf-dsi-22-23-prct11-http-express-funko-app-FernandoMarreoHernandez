@@ -1,7 +1,7 @@
 import 'mocha';
 import { expect } from 'chai';
-import { Funko,Genero,Tipo } from '../../dist/Funko/Funko.js';
-import { ColeccionFunkos } from '../../dist/Funko/ColeccionFunkos.js';
+import { Funko,Genero,Tipo } from '../../src/Funko/Funko.js';
+import { ColeccionFunkos } from '../../src/Funko/ColeccionFunkos.js';
 
 describe('ColeccionFunkos', () => {
     let Funko1 = new Funko(104, 'Pain','es una figura de la serie Naruto (best anime ever)', Genero.Anime, Tipo.PopXXL,'Naruto', 920,

@@ -1,6 +1,6 @@
 import 'mocha';
 import { expect } from 'chai';
-import { Usuario } from '../../dist/Usuario/Usuario.js';
+import { Usuario } from '../../src/Usuario/Usuario.js';
 
 describe('Usuario', () => {
     let Usuario1 = new Usuario('Fernando');

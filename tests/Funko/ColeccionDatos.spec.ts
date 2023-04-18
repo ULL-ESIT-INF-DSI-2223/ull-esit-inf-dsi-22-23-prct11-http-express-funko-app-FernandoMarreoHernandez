@@ -1,9 +1,9 @@
 import 'mocha';
 import { expect } from 'chai';
-import { ColeccionDatos } from '../../dist/Funko/ColeccionDatos.js';
-import { ColeccionFunkos } from '../../dist/Funko/ColeccionFunkos.js';
-import { Funko, Genero, Tipo } from '../../dist/Funko/Funko.js';
-import { Usuario } from '../../dist/Usuario/Usuario.js';
+import { ColeccionDatos } from '../../src/Funko/ColeccionDatos.js';
+import { ColeccionFunkos } from '../../src/Funko/ColeccionFunkos.js';
+import { Funko, Genero, Tipo } from '../../src/Funko/Funko.js';
+import { Usuario } from '../../src/Usuario/Usuario.js';
 
 describe('ColeccionDatos', () => {
   let Usuario1 = new Usuario('Fernando');
