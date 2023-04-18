@@ -1,13 +1,7 @@
 import request from 'request';
-import {Funko, Tipo, Genero} from './Funko/Funko';
-import {ColeccionFunkos} from './Funko/ColeccionFunkos';
-import { Usuario } from './Usuario/Usuario';
-import chalk from 'chalk';
+import {Funko, Tipo, Genero} from './Funko/Funko.js';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import { ColeccionDatos } from './Funko/ColeccionDatos';
-import fs from 'fs';
-import { exit } from 'process';
 
 interface ResponseData {
   datos: any;
@@ -18,8 +12,8 @@ interface ResponseData {
 }
 
 
-const ShowRequest = (usuario:string, id:number, callback: (err: string | undefined, data: request.Response | undefined) => void) => {
-  const url = `http://localhost:3000/funko?usuario=${usuario}&id=${id}`;
+const ShowRequest = (usuario:string, id:number, flag:boolean, callback: (err: string | undefined, data: request.Response | undefined) => void) => {
+  const url = `http://localhost:4099/funko?usuario=${usuario}&id=${id}&flag=${flag}`;
   request({url: url, method: 'GET'}, (error: Error, response) => {
     if (error) {
       callback('Error al enviar la solicitud GET', undefined);
@@ -28,18 +22,6 @@ const ShowRequest = (usuario:string, id:number, callback: (err: string | undefin
     }
   });
 };
-
-const listRequest = (usuario: string, id: number, flag: boolean, callback: (err: any, data: ResponseData) => void) => {
-  const url = `http://localhost:3000/funko?usuario=${usuario}`;
-  request({url: url, method: 'GET'}, (error: Error, response) => {
-    if (error) {
-      callback('Error al enviar la solicitud GET', undefined);
-    } else {
-      callback(undefined, JSON.parse(response.body));
-    }
-  });
-};
-
 
 const addRequest = (id:number,
   usuario:string,
@@ -52,7 +34,7 @@ const addRequest = (id:number,
   exclusivo:boolean,
   caracteristicas:string,
   valor:number, callback: (err: string | undefined, data: request.Response | undefined) => void) => {
-  const url = `http://localhost:3000/funko?usuario=${usuario}&id=${id}&nombre=${nombre}&descripcion=${descripcion}&tipo=${tipo}&genero=${genero}&franquicia=${franquicia}&numero=${numero}&exclusivo=${exclusivo}&caracteristicas=${caracteristicas}&valor=${valor}`;
+  const url = `http://localhost:4099/funko?usuario=${usuario}&id=${id}&nombre=${nombre}&descripcion=${descripcion}&tipo=${tipo}&genero=${genero}&franquicia=${franquicia}&numero=${numero}&exclusivo=${exclusivo}&caracteristicas=${caracteristicas}&valor=${valor}`;
   request({url: url, method: 'POST'}, (error: Error, response) => {
     if (error) {
       callback('Error al enviar la solicitud POST', undefined);
@@ -63,7 +45,7 @@ const addRequest = (id:number,
   };
 
 const deleteRequest = (usuario:string, id:number, callback: (err: string | undefined, data: request.Response | undefined) => void) => {
-  const url = `http://localhost:3000/funko?usuario=${usuario}&id=${id}`;
+  const url = `http://localhost:4099/funko?usuario=${usuario}&id=${id}`;
   request({url: url, method: 'DELETE'}, (error: Error, response) => {
     if (error) {
       callback('Error al enviar la solicitud DELETE', undefined);
@@ -84,7 +66,7 @@ const updateRequest = (id:number,
   exclusivo:boolean,
   caracteristicas:string,
   valor:number, callback: (err: string | undefined, data: request.Response | undefined) => void) => {
-  const url = `http://localhost:3000/funko?usuario=${usuario}&id=${id}&nombre=${nombre}&descripcion=${descripcion}&tipo=${tipo}&genero=${genero}&franquicia=${franquicia}&numero=${numero}&exclusivo=${exclusivo}&caracteristicas=${caracteristicas}&valor=${valor}`;
+  const url = `http://localhost:4099/funko?usuario=${usuario}&id=${id}&nombre=${nombre}&descripcion=${descripcion}&tipo=${tipo}&genero=${genero}&franquicia=${franquicia}&numero=${numero}&exclusivo=${exclusivo}&caracteristicas=${caracteristicas}&valor=${valor}`;
   request({url: url, method: 'PATCH'}, (error: Error, response) => {
     if (error) {
       callback('Error al enviar la solicitud PATCH', undefined);
@@ -108,7 +90,8 @@ yargs(hideBin(process.argv))
       type: 'string',
     },
   }, (argv) => {
-    ShowRequest(argv.usuario,argv.id, (err, data) => {
+    let bandera = true;
+    ShowRequest(argv.usuario,argv.id,bandera,(err, data) => {
       if (err) {
         console.error(err);
       } else{
@@ -270,22 +253,24 @@ yargs(hideBin(process.argv))
       }
     });
   })
-  .command('list', 'Add a new note', {}
-  ,(argv) => {
-    let usuario = "a";
-    console.log(usuario);
+
+  .command('list', 'Add a new note', {
+    usuario: {
+      describe: 'usuario',
+      demandOption: true,
+      type: 'string',
+    },
+  }, (argv) => {
+    console.log ('Listar');
     let id = 0;
-    let flag = true;
-    listRequest(usuario, id, flag, (err, data: ResponseData) => {
+    let bandera = false;
+    ShowRequest(argv.usuario,id,bandera,(err, data) => {
       if (err) {
         console.error(err);
-      } else {
-        const datos = data.datos;
-        //bucle for each que recorre todos los objetos del objeto
-        console.log(datos);
+      } else{
+        console.log(data.body);
       }
     });
-
   })
 
   .help()

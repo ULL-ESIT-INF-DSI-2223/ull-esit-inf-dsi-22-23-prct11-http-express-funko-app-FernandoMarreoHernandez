@@ -1,21 +1,13 @@
 import express from 'express';
-import {Funko, Tipo, Genero} from './Funko/Funko';
-import {ColeccionFunkos} from './Funko/ColeccionFunkos';
-import { Usuario } from './Usuario/Usuario';
-import chalk from 'chalk';
-import yargs from 'yargs';
-import { hideBin } from 'yargs/helpers';
-import { ColeccionDatos } from './Funko/ColeccionDatos';
+import {Funko, Tipo, Genero} from './Funko/Funko.js';
+import {ColeccionFunkos} from './Funko/ColeccionFunkos.js';
+import { Usuario } from './Usuario/Usuario.js';
+import { ColeccionDatos } from './Funko/ColeccionDatos.js';
 import fs from 'fs';
-import { exit } from 'process';
-import { text } from 'stream/consumers';
 import { finished } from 'stream';
 let ColeccionDatos1 = new ColeccionDatos([]);
 
-interface ColeccionDeDatos {
-  funkos: Funko[];
-  Duenio: string;
-}
+const servidor = express();
 
 /**
  * funcion para crear la base de datos
@@ -66,11 +58,19 @@ function guardarBaseDatos(){
   });
 }
 
-const servidor = express();
-
+/**
+ * funcion para mostrar informacion de un funko o de todos los funkos de un usuario
+ */
 servidor.get('/funko', (req, res) => {
   const flagayuda= req.query.flag as string;
-  const flag = Boolean(flagayuda);
+  let flag:boolean;
+  if (flagayuda === 'false'){
+    flag = Boolean(!flagayuda);
+  }
+  else {
+    flag = Boolean(flagayuda);
+  }
+  if(flag === true){
     let datosEnvio: (string|number|boolean)[]=[];
     const ayudaId = req.query.id as string;
     const idGet = parseInt(ayudaId);
@@ -95,14 +95,37 @@ servidor.get('/funko', (req, res) => {
               res.send(datosEnvio);
             }
             else{
-              console.log(chalk.red('No existe el funko con ese id'));
+              res.send('No existe el funko con ese id');
             }
           }
         })
       })
     }
+    else{
+      res.send('No existe el usuario');
+    }
+  }
+  else if (flag === false){
+    if(fs.existsSync('./datos/'+req.query.usuario)){
+      let salida = '';
+      ColeccionDatos1.getDatos().forEach(usuario => {
+      if(usuario.getDuenioColeccion() == req.query.usuario){
+        usuario.getFunkos().forEach(funko => {
+          salida+= funko.GetNombre() + '\n';
+        });
+      }
+      });
+      res.send(salida);
+    }
+    else{
+      res.send('No existe el usuario');
+    }
+  }
 });
 
+/**
+ * el servidor crea un funko y lo añade a la coleccion
+ */
 servidor.post('/funko', (req, res) => {
   const ayudaId = req.query.id as string;
   const idGet = parseInt(ayudaId);
@@ -153,6 +176,9 @@ servidor.post('/funko', (req, res) => {
 }
 });
 
+/**
+ * el servidor borra un funko de la coleccion del usuario
+ */
 servidor.delete('/funko', (req, res) => {
   const ayudaId = req.query.id as string;
   const idGet = parseInt(ayudaId);
@@ -179,6 +205,9 @@ servidor.delete('/funko', (req, res) => {
   guardarBaseDatos();
 });
 
+/**
+ * el servidor modifica un funko en funcion a los parametros indicados
+ */
 servidor.patch('/funko', (req, res) => {
   const ayudaId = req.query.id as string;
   const idGet = parseInt(ayudaId);
@@ -218,13 +247,12 @@ servidor.patch('/funko', (req, res) => {
   guardarBaseDatos();
 });
 
-servidor.get('/funko', (req, res) => {
-  console.log('hola');
-  res.send(ColeccionDatos1);
-});
-
-servidor.listen(3000, () => {
-  console.log('Server is up on port 3000');
+/**
+ * inicia el servidor en el puerto indicado
+ * y crea la base de datos
+ */
+servidor.listen(4099, () => {
+  console.log('Server is up on port 4099');
     //llama al metodo para crear la base de datos
     crearBaseDatos();
 });
