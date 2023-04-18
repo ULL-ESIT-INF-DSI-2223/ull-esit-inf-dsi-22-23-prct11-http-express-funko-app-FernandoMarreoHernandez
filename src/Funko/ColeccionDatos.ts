@@ -1,5 +1,5 @@
-import { ColeccionFunkos } from "./ColeccionFunkos";
-import { Funko,Genero,Tipo } from "./Funko";
+import { ColeccionFunkos } from "./ColeccionFunkos.js";
+import { Funko,Genero,Tipo } from "./Funko.js";
 /**
  * Clase que representa una coleccion de Funkos
  * @class ColeccionFunkos

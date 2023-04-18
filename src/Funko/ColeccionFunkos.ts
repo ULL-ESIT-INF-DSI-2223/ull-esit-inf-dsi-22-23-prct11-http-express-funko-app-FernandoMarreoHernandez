@@ -1,4 +1,4 @@
-import { Funko } from './Funko';
+import { Funko } from './Funko.js';
 
 /**
  * Clase que representa una coleccion de Funkos
